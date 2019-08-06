@@ -183,6 +183,8 @@ public class LoopView extends View {
         }
     }
 
+    int tempInitPosition=-1;
+
     @Override
     protected void onDraw(Canvas canvas) {
         String as[];
@@ -192,7 +194,11 @@ public class LoopView extends View {
         }
         as = new String[itemCount];
         change = (int) (totalScrollY / (lineSpacingMultiplier * maxTextHeight));
-        preCurrentIndex = initPosition + change % arrayList.size();
+        if(tempInitPosition==-1){
+            tempInitPosition=initPosition;
+        }
+        preCurrentIndex = tempInitPosition==-1?0:tempInitPosition + change % arrayList.size();
+
         if (!isLoop) {
             if (preCurrentIndex < 0) {
                 preCurrentIndex = 0;
@@ -202,12 +208,7 @@ public class LoopView extends View {
             }
             // break;
         } else {
-            if (preCurrentIndex < 0) {
-                preCurrentIndex = arrayList.size() + preCurrentIndex;
-            }
-            if (preCurrentIndex > arrayList.size() - 1) {
-                preCurrentIndex = preCurrentIndex - arrayList.size();
-            }
+            preCurrentIndex=preCurrentIndex%arrayList.size();
             // continue;
         }
 
@@ -281,6 +282,15 @@ public class LoopView extends View {
         }
         super.onDraw(canvas);
     }
+
+
+    @Override protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        tempInitPosition=-1;
+    }
+
+
 
     private Rect r = new Rect();
 
