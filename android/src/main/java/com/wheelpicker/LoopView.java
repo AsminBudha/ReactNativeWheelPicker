@@ -217,12 +217,12 @@ public class LoopView extends View {
         while (k1 < itemCount) {
             int l1 = preCurrentIndex - (itemCount / 2 - k1);
             if (isLoop) {
-                if (l1 < 0) {
-                    l1 = l1 + arrayList.size();
+                int abs=Math.abs(l1);
+
+                if(abs>arrayList.size()){
+                    l1+=(Math.floor(abs/arrayList.size()))*arrayList.size();
                 }
-                if (l1 > arrayList.size() - 1) {
-                    l1 = l1 - arrayList.size();
-                }
+                l1=(l1+arrayList.size())%arrayList.size();
                 as[k1] = (String) arrayList.get(l1);
             } else if (l1 < 0) {
                 as[k1] = "";
